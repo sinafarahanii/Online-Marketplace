@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block title%}Brows{% endblock %}
+
+{% block content %}
+    <div class="pb-6 grid grid-cols-4 gap-4">
+        <div class="col-span-3 bg-gray-100">
+            <div class="grid grid-cols-3 gap-5 px-4 py-4">
+                {% for item in items %}
+                    <div>
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div>
+                                <img src="{{ item.image.url }}" class="rounded-t-xl">
+                            </div>
+                            <div class="p-6 bg-white rounded-b-xl ">
+                                <h2 class="text-2xl">{{ item.name }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price }}$</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="px-4 py-4 col-span-1 bg-green-100">
+            <p class="font-semibold text-2xl">Filters: </p>
+            <hr class="my-6" style="border-color: black">
+            <form method="get" action="{% url 'item:brows' %}">
+                <input name="query" class="w-full rounded-xl py-4 px-6 border" type="text" value="{{ query }}" placeholder="Type here...">
+                <button class="mt-3 py-4 px-8 text-lg rounded-xl bg-teal-500 hover:bg-teal-700 text-white ">Search</button>
+            </form>
+            <hr class="my-6" style="border-color: black">
+            <p class="font-semibold mb-2">Categories: </p>
+            <ul>
+                {% for category in categories %}
+                    <li class="mb-2 px-2 py-2 rounded-xl hover:bg-green-300{% if category.id == category_id %} bg-green-300 {% else %} bg-green-50 {% endif %}">
+                        <a href="{% url 'item:brows' %}?query={{ query }}&category={{ category.id }}" class="block w-full h-full">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <hr class="my-6" style="border-color: black">
+            <ul>
+                <li><a href="{% url 'item:brows' %}" class="mt-2 py-4 px-8 inline-block bg-yellow-400 text-lg rounded-xl hover:bg-yellow-600 text-white">Reset</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
